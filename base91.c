@@ -4,16 +4,28 @@
 #define BLOCO_SIZE 13
 
 void leBloco(FILE *fp) {
-  char temp;
+  // unsigned char temp[2];
+  int16_t temp;
   int i= 0;
   fseek(fp, 0, SEEK_SET);
 
   while(!feof(fp)){
-    fread(&temp, sizeof(char), 1, fp);
-    if(i==2)
-      printf("leu: %02x\n", temp);
+    //lendo 8bits
+    fread(&temp, sizeof(int16_t), 1, fp);
+    if(i == 1) {
+      printf("%02x\n", temp);
+      //16 - 3 = 13
+      temp = temp >> 3;
+      printf("%02x\n", temp);
+    }
+
     i++;
   }
+}
+
+void escreveBloco(FILE *fp) {
+  //usar putc
+  //putc(c, fp);
 }
 
 FILE* open_file(char* fileName) {
@@ -26,27 +38,23 @@ FILE* open_file(char* fileName) {
   return fp;
 }
 
-void escreveBloco(FILE *fp) {
-  char c = '0';
-  putc(c, fp);
-}
-
 int main(int argc, char *argv[]) {
   FILE *fp;
 
-  if(argc != 2) {
+  if(argc != 3) {
     printf("O primeiro argumento deve ser D, para decode, ou E para encode\n");
     printf("O segundo argumento deve ser o nome do arquivo de entrada\n");
-    return -1;
+    return 0;
   }
 
-  //fp = open_file(argv[1]);
-  fp = fopen(argv[1], "a+b");
+  fp = open_file(argv[2]);
 
-  leBloco(fp);
-  //leBloco(fp);
+  if(argv[1][0] == 'D')
+    leBloco(fp);
+  else if(argv[1][0] == 'E')
+    escreveBloco(fp);
+
   fclose(fp);
-
 
   return 0;
 }
