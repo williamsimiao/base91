@@ -24,24 +24,25 @@ char decode(int16_t numero) {
     caracter = '!';
   else
     caracter = '?';
-    printf("numero fora da tabela de base 91\n", );
+    printf("numero fora da tabela de base 91\n");
 
   return caracter;
 }
 
 void leBloco(FILE *fp) {
   // unsigned char temp[2];
-  int16_t x, temp, y1, y2;
+  int16_t x, temp, temp2, y1, y2;
   int i= 0;
   fseek(fp, 0, SEEK_SET);
 
   while(!feof(fp)){
     //lendo 8bits
-    fread(&temp, sizeof(int16_t), 1, fp);
+    fread(&x, sizeof(int16_t), 1, fp);
+    //Na primeira vez 13 bits serão o X os 3 outros lidos farão parte do proximo bloco
     if(i == 0) {
       printf("%02x\n", x);
       //exclui os 13 primeiros bits
-      temp = x << 13
+      temp = x << 13;
       //exclui os 3 ultimos bits
       x = x >> 3;
       printf("%02x\n", x);
@@ -53,7 +54,16 @@ void leBloco(FILE *fp) {
       printf("%c\n", decode(y2));
 
     }
+    //depois da primeira leitura X
     else {
+      //armazena os 3 ultimos bits
+      temp2 = x >> 3;
+      //EXCLUI os 3 ultimos bits
+      x = x >> 3;
+      //concatena x e temp da ultima iteração
+      x = temp & x;
+      //
+      temp = temp2;
 
     }
 
