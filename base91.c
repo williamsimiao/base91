@@ -2,21 +2,59 @@
 #include <stdlib.h>
 
 #define BLOCO_SIZE 13
+#define DESLOCAMENTO_ASCII_MAIUSCULO 65
+#define DESLOCAMENTO_ASCII_MINUSCULO 71
+#define DESLOCAMENTO_ASCII_ALGARISMOS -4
+
+char decode(int16_t numero) {
+  //letras maiusculas
+  char caracter;
+  if(numero >= 0 && numero <= 25)
+    caracter = numero+DESLOCAMENTO_ASCII_MAIUSCULO;
+  //letras minusclas
+  else if(numero >= 26 && numero <= 51)
+    caracter = numero+DESLOCAMENTO_ASCII_MINUSCULO;
+  //algarismos
+  else if(numero >= 52 && numero <= 61)
+    caracter = numero+DESLOCAMENTO_ASCII_ALGARISMOS;
+    //Simbolos
+  else if(numero >= 53 && numero <= 90)
+    //por enquanto printar qualquer simbolo, visto que a ordem da base 91
+    //não é a mesma da tabela ASCII
+    caracter = '!';
+  else
+    caracter = '?';
+    printf("numero fora da tabela de base 91\n", );
+
+  return caracter;
+}
 
 void leBloco(FILE *fp) {
   // unsigned char temp[2];
-  int16_t temp;
+  int16_t x, temp, y1, y2;
   int i= 0;
   fseek(fp, 0, SEEK_SET);
 
   while(!feof(fp)){
     //lendo 8bits
     fread(&temp, sizeof(int16_t), 1, fp);
-    if(i == 1) {
-      printf("%02x\n", temp);
-      //16 - 3 = 13
-      temp = temp >> 3;
-      printf("%02x\n", temp);
+    if(i == 0) {
+      printf("%02x\n", x);
+      //exclui os 13 primeiros bits
+      temp = x << 13
+      //exclui os 3 ultimos bits
+      x = x >> 3;
+      printf("%02x\n", x);
+
+      //Achando o Y1 e Y2
+      y1 = x/91;
+      y2 = x%91;
+      printf("%c\n", decode(y1));
+      printf("%c\n", decode(y2));
+
+    }
+    else {
+
     }
 
     i++;
