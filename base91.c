@@ -47,20 +47,24 @@ void leBloco(FILE *fp) {
     //Na primeira vez 13 bits serão o X, os 3 outros lidos farão parte do proximo bloco
     if(i == 0) {
       printf("%02x\n", x);
-      //exclui os 13 primeiros bits
+      //exclui os 13 primeiros bits, sobra os 3 ultimos
       temp = x << 13;
-      //exclui os 3 ultimos bits
+      //exclui os 3 ultimos bits, sobra os 13 primeiros
       x = x >> 3;
       printf("%02x\n", x);
     }
     //depois da primeira leitura X
     else {
       //armazena os 3 ultimos bits
-      temp2 = x >> 3;
+      temp2 = x << 13;
       //EXCLUI os 3 ultimos bits
       x = x >> 3;
+      printf("1- %02x\n", x);
+
       //concatena x e temp da ultima iteração
-      x = temp & x;
+      x = temp | x;
+      printf("2-%02x\n", x);
+
       //
       temp = temp2;
 
