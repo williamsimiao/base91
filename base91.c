@@ -7,11 +7,18 @@
 #define DESLOCAMENTO_ASCII_ALGARISMOS -4
 #define DESLOCAMENTO_ARRAY_CARACTER  62
 
+#define A 65
+#define Z 90
+#define a 97
+#define z 122
+#define ZERO 48
+#define NOVE 57
+#define LENGTH_ARR_CHAR 29
 //10 por linha
 //codigos entre 62 e 90
-char array_caracter[] = {'!', '#', '$', '>', '?', '@',  '[', ']', '^', '_',
+char array_caracter[] = {'!', '#', '$', '>', '?', '@', '[', ']', '^', '_',
                            '`', '{', '|', '}', '~', '\'', '%', '&', '(', ')',
-                           '*', '+', ',', '.', '/', ':' , ';', '<', '='       };
+                           '*', '+', ',', '.', '/', ':' , ';', '<', '='};
 
 char decode(int16_t numero) {
   //letras maiusculas
@@ -79,9 +86,57 @@ void leBloco(FILE *fp) {
   }
 }
 
-void escreveBloco(FILE *fp) {
-  //usar putc
-  //putc(c, fp);
+int charToInt(char s) {
+  int num;
+  /* Transforma ascii entre a-z para int da base91.
+  Obs.: 71 = a(ascii) - a(base91) */
+  if((s >= a) && (s <= z)) {
+    printf("aqui\n");
+    num = s - 71;
+  }
+  /* Transforma ascii entre A-Z para int da base91.*/
+  else if((s >= A) && (s <= Z)) {
+    num = s - A;
+  }
+  /* Transforma ascii entre 0-9 para int da base91.
+  4-> 52(zero base91) - 48(zero ascii)*/
+  else if((s >= ZERO) && (s <= NOVE)) {
+    num = s + 4;
+  }
+  /*Transforma os caracteres restantes em base91. 62 eh o int
+  correspondente a posicao 0 do vetor array_caracter*/
+  else {
+    for(int i = 0; i < LENGTH_ARR_CHAR; i++) {
+      if(s == array_caracter[i]){
+        return i + 62;
+      }
+    }
+    return -1;
+  }
+  return num;
+}
+
+void base91tobinary(FILE *fp) {
+  //pego duas letras de um arquivo base91 de texto-> 1letra e 2letra
+  //y1 = 1letra, y2 = 2letra
+  //encontro o valor de x somando x1 e x2, onde x1 é igual a (y1 * 91) e y2 é (x1 * 91 + y2)
+  //transformo o inteiro x em um binario
+  int y1, y2, x;
+  char letra1, letra2;
+
+  //letra1 = leChar(&fp);
+  //letra2 = leChar(&fp);
+  letra1 = 'j';
+  letra2 = '<';
+
+  y1 = charToInt(letra1);
+  y2 = charToInt(letra2);
+
+  x = (y1 * 91) + y2;
+  printf("Y1: %d\n", y1);
+  printf("Y2: %d\n", y2);
+  printf("X: %d\n", x);
+  //bin = intToBinary(x);
 }
 
 FILE* open_file(char* fileName) {
@@ -93,6 +148,7 @@ FILE* open_file(char* fileName) {
   }
   return fp;
 }
+
 
 int main(int argc, char *argv[]) {
   FILE *fp;
@@ -108,9 +164,10 @@ int main(int argc, char *argv[]) {
   if(argv[1][0] == 'D')
     leBloco(fp);
   else if(argv[1][0] == 'E')
-    escreveBloco(fp);
+    base91tobinary(fp);
 
   fclose(fp);
+
 
   return 0;
 }
