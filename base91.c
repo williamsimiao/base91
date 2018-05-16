@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define BLOCO_SIZE 13
 #define DESLOCAMENTO_ASCII_MAIUSCULO 65
@@ -116,27 +117,39 @@ int charToInt(char s) {
   return num;
 }
 
+//void salvarBin(bin,File){}
+
+/*Implementar: parametro-> arquivo com arquivo texto em base91
+Ler um char de cada vez, deslocar o ponteiro para que na proxima
+vez que executar essa funcao possa ler um char diferente*/
+char leChar(FILE *fp) {
+  return 'j';
+}
+
+/*
+1-pego duas letras de um arquivo base91 de texto-> 1letra e 2letra
+2-y1 = 1letra, y2 = 2letra
+3-encontro o valor de x multiplicando y1 por 91 e somando com y2
+4-transformo o inteiro x em um binario
+5-Salvo o binario em um arquivo texto
+*/
 void base91tobinary(FILE *fp) {
-  //pego duas letras de um arquivo base91 de texto-> 1letra e 2letra
-  //y1 = 1letra, y2 = 2letra
-  //encontro o valor de x somando x1 e x2, onde x1 é igual a (y1 * 91) e y2 é (x1 * 91 + y2)
-  //transformo o inteiro x em um binario
   int y1, y2, x;
   char letra1, letra2;
 
-  //letra1 = leChar(&fp);
-  //letra2 = leChar(&fp);
-  letra1 = 'j';
-  letra2 = '<';
+  //while(fimDoArquivo){
+    letra1 = leChar(fp);
+    letra2 = leChar(fp);
+    letra1 = 'j';
+    letra2 = '<';
 
-  y1 = charToInt(letra1);
-  y2 = charToInt(letra2);
+    y1 = charToInt(letra1);
+    y2 = charToInt(letra2);
 
-  x = (y1 * 91) + y2;
-  printf("Y1: %d\n", y1);
-  printf("Y2: %d\n", y2);
-  printf("X: %d\n", x);
-  //bin = intToBinary(x);
+    x = (y1 * 91) + y2;
+    //bin = intToBinary(x);
+    //salvarBin(bin, file); ->salvar esse binario em um arquivo binario
+  //}
 }
 
 FILE* open_file(char* fileName) {
