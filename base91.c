@@ -5,6 +5,13 @@
 #define DESLOCAMENTO_ASCII_MAIUSCULO 65
 #define DESLOCAMENTO_ASCII_MINUSCULO 71
 #define DESLOCAMENTO_ASCII_ALGARISMOS -4
+#define DESLOCAMENTO_ARRAY_CARACTER  62
+
+//10 por linha
+//codigos entre 62 e 90
+char array_caracter[] = {'!', '#', '$', '>', '?', '@',  '[', ']', '^', '_',
+                           '`', '{', '|', '}', '~', '\'', '%', '&', '(', ')',
+                           '*', '+', ',', '.', '/', ':' , ';', '<', '='       };
 
 char decode(int16_t numero) {
   //letras maiusculas
@@ -19,12 +26,11 @@ char decode(int16_t numero) {
     caracter = numero+DESLOCAMENTO_ASCII_ALGARISMOS;
     //Simbolos
   else if(numero >= 53 && numero <= 90)
-    //por enquanto printar qualquer simbolo, visto que a ordem da base 91
-    //não é a mesma da tabela ASCII
-    caracter = '!';
-  else
+    caracter = array_caracter[numero-DESLOCAMENTO_ARRAY_CARACTER];
+  else {
     caracter = '?';
     printf("numero fora da tabela de base 91\n");
+  }
 
   return caracter;
 }
@@ -35,10 +41,10 @@ void leBloco(FILE *fp) {
   int i= 0;
   fseek(fp, 0, SEEK_SET);
 
-  while(!feof(fp)){
+  while(!feof(fp) && i < 4){
     //lendo 8bits
     fread(&x, sizeof(int16_t), 1, fp);
-    //Na primeira vez 13 bits serão o X os 3 outros lidos farão parte do proximo bloco
+    //Na primeira vez 13 bits serão o X, os 3 outros lidos farão parte do proximo bloco
     if(i == 0) {
       printf("%02x\n", x);
       //exclui os 13 primeiros bits
@@ -46,13 +52,6 @@ void leBloco(FILE *fp) {
       //exclui os 3 ultimos bits
       x = x >> 3;
       printf("%02x\n", x);
-
-      //Achando o Y1 e Y2
-      y1 = x/91;
-      y2 = x%91;
-      printf("%c\n", decode(y1));
-      printf("%c\n", decode(y2));
-
     }
     //depois da primeira leitura X
     else {
@@ -66,6 +65,11 @@ void leBloco(FILE *fp) {
       temp = temp2;
 
     }
+    //Achando o Y1 e Y2
+    y1 = x/91;
+    y2 = x%91;
+    printf("%c\n", decode(y1));
+    printf("%c\n", decode(y2));
 
     i++;
   }
