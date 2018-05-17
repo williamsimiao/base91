@@ -181,11 +181,13 @@ int main(int argc, char *argv[]) {
 
   fp = open_file(argv[2]);
 
-  if(argv[1][0] == 'D')
+  if(argv[1][0] == 'D'){
     leBloco(fp);
     fclose(fp);
-  else if(argv[1][0] == 'E')
+  }
+  else if(argv[1][0] == 'E'){
     base91tobinary(fp);
+  }
 
 
 
