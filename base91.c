@@ -119,11 +119,14 @@ int charToInt(char s) {
 
 //void salvarBin(bin,File){}
 
-/*Implementar: parametro-> arquivo com arquivo texto em base91
+/* parametro-> arquivo com arquivo texto em base91
 Ler um char de cada vez, deslocar o ponteiro para que na proxima
 vez que executar essa funcao possa ler um char diferente*/
 char leChar(FILE *fp) {
-  return 'j';
+char lido;
+fscanf(fp,"%c", &lido);
+printf("Charlido: %c\n",lido);
+  return lido;
 }
 
 /*
@@ -134,23 +137,21 @@ char leChar(FILE *fp) {
 5-Salvo o binario em um arquivo texto
 */
 void base91tobinary(FILE *fp) {
-  int y1, y2, x;
+  int y1, y2, x,binx;
   char letra1, letra2;
+  float xfloa,xbinfloa;
 
-  //while(fimDoArquivo){
+ while(!feof(fp)) {
+
     letra1 = leChar(fp);
     letra2 = leChar(fp);
-    letra1 = 'j';
-    letra2 = '<';
 
     y1 = charToInt(letra1);
     y2 = charToInt(letra2);
 
     x = (y1 * 91) + y2;
-    //bin = intToBinary(x);
-    //salvarBin(bin, file); ->salvar esse binario em um arquivo binario
-  //}
-}
+    printf("int base91: %d \n",x);
+ }
 
 FILE* open_file(char* fileName) {
   FILE *fp;
