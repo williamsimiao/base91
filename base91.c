@@ -137,9 +137,8 @@ printf("Charlido: %c\n",lido);
 5-Salvo o binario em um arquivo texto
 */
 void base91tobinary(FILE *fp) {
-  int y1, y2, x,binx;
+  int y1, y2, x,vetorx[1000],i=0;
   char letra1, letra2;
-  float xfloa,xbinfloa;
 
  while(!feof(fp)) {
 
@@ -151,7 +150,14 @@ void base91tobinary(FILE *fp) {
 
     x = (y1 * 91) + y2;
     printf("int base91: %d \n",x);
+    vetorx[i]= x;
+i=i+1;
  }
+ fclose(fp);
+ FILE* fpescrita = fopen("SAIDA_BASE91", "wb");
+fwrite(vetorx,sizeof(vetorx[i]),1,fpescrita);
+fclose(fpescrita);
+}
 
 FILE* open_file(char* fileName) {
   FILE *fp;
@@ -177,10 +183,11 @@ int main(int argc, char *argv[]) {
 
   if(argv[1][0] == 'D')
     leBloco(fp);
+    fclose(fp);
   else if(argv[1][0] == 'E')
     base91tobinary(fp);
 
-  fclose(fp);
+
 
 
   return 0;
