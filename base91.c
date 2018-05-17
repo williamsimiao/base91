@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 
 #define BLOCO_SIZE 13
 #define DESLOCAMENTO_ASCII_MAIUSCULO 65
